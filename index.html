@@ -2,14 +2,57 @@
 <html>
 <head>
 	<title>EnthusiastDW's HomePage</title>
-	<meta charset="utf-8"/>
+	<meta charset="UTF-8">
 	<style type="text/css">
 		#body{
 			background-color: lightblue;
 		}
+		.page-header{
+			font:64px 'Edwardian script ITC','Brush script MT','微软雅黑';
+			text-align: center;
+			margin: 20px 0 20px;
+		}
 	</style>
 </head>
 <body id="body">
-	<span style="font:48px 'Edwardian script ITC','Brush script MT','微软雅黑'">Welcome to my zone!</span>
+	<div class="page-header">
+ 	 	<h1>Welcome to my zone!</h1>
+ 	 	<p class="text-right" style="font: 12px '微软雅黑';">EnthusiastDW's personal web</p>
+	</div>
+
+	<div class="row">
+  		<div class="col-md-2">
+  			<div class="list-group" id="logs">
+			 	<a href="#" class="list-group-item active">文章列表</a>
+
+			</div>
+  		</div>
+  		<div class="col-md-10">
+  			<iframe src="html/welcome.html" name="contents" frameborder="0px" width="100%" height="10000px"></iframe>
+  		</div>
+	</div>
+
+
+
+
+
+
+	<link rel="stylesheet" type="text/css" href="js-css\bootstrap\css\bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="js-css\bootstrap\css\bootstrap-theme.min.css">
+	<script src="js-css\jquery\1.11.1\jquery.min.js"></script>
+	<script src="js-css\bootstrap\js\bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			
+			$.getJSON("lists.json",function(data){
+				$.each(data.lists,function(index,src){
+					if (src == "") { src = "#";}
+					var	str = "<a target='contents' href='"+src+"' class='list-group-item'></a>"
+					$("#logs").append(str);
+				});
+			});
+			
+		});
+	</script>
 </body>
 </html>
