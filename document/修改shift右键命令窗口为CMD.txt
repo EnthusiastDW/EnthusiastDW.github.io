@@ -1,0 +1,2 @@
+计算机\HKEY_CLASSES_ROOT\Directory\Background\shell\cmd
+将HideBasedOnVelocityId改为ShowBasedOnVelocityId
