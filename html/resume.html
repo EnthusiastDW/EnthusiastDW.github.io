@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="..\js-css\bootstrap\css\bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="..\js-css\bootstrap\css\bootstrap-theme.min.css">
+	<style type="text/css">
+		.list-group-item{
+			border: 0px;
+			margin: 2px 0;
+			font-size: 18px;
+			background-color: white;
+			background-image: none;
+			padding: 2px 10px;
+		}
+		
+		h1.name{
+			color: #3071a9;
+			font-size: 48px;
+		}
+		.panel-body{
+			padding: 5px;
+			margin-top: 15px;
+		}
+		.panel {
+			margin-bottom: 5px;
+			margin-right: 30px;
+			vertical-align: middle;
+		}
+		.panel-default{
+			vertical-align: middle;
+		}
+		h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+			margin-top: 0px;
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+		td{
+			vertical-align: middle;
+		}
+		.panel-body{
+			line-height: 36px;
+		}
+		table{
+
+		}
+	</style>
+</head>
+<body>
+	<div class="row" style="margin-top: 30px;width: 1680px;height: 2240px;" >
+		<div class="col-md-3" style="padding-right: 0px;margin-left: 20px;">
+		  	<div class="panel panel-default">
+				<div class="list-group-item" style="text-align: center;">
+				  <h1 class="name">name</h1>
+				</div>
+				<div class="panel-body" style="border: none;">
+				  	<p style="text-align: center;">
+				  		<img src="nanuto.jpg" class="img-circle" id="photo" style="height: 220px;">
+				  	</p>
+				</div>
+
+			  	<!--基本信息 -->
+			  	<ul class="list-group" id="base_msg" style="margin: 0 30px;border: none; padding-bottom: 10px;">
+			   	 	<li class="list-group-item"></li>
+			  	</ul>
+			</div>
+		</div>
+	  	<div class="col-md-8" style="padding-left: 0px"></div>
+	</div>
+	<script src="..\js-css\bootstrap\js\bootstrap.min.js"></script>
+	<script src="..\js-css\jquery\1.11.1\jquery.min.js"></script>
+	<script src="..\data\resume.js"></script>
+	<script type="text/javascript">
+		
+		$(function(){
+			//拼装左侧内容
+			$.each(base,function(i,msg){
+				if(msg.field == "name"){
+					$("h1.name").text(msg.message);
+					$("#photo").prop("src","../images/icons/"+msg.message+".jpg");
+				}
+
+				var str = "<li class='list-group-item'>";
+				if(msg.field != "" && msg.field != "name"){
+					if(msg.icon != ""){
+						str += "<img src='../images/icons/"+msg.icon+".png' width='34px'>&emsp;";
+					}
+					str += msg.message;
+				}
+				str += "</li>";
+				$("#base_msg").append(str);
+			});
+
+			//拼装右侧内容
+			//遍历
+			insertContent(other,".col-md-3");
+			insertContent(data,".col-md-8");
+			$("td[index='0']").css("width","30%");
+			$("td[index='1']").css("width","30%");
+			//$("td[index='2']").css("width","200px");
+		});
+		function insertContent(data,target){
+			$.each(data,function(index,str){
+				var item = "<div class='panel panel-default'>" + 
+				"<div class='list-group-item' style='text-align: left;'><h3>";
+				item += str.title + "</h3>";
+				if(str.type == "list"){
+					//分割字符串为数组
+					var list_items = new Array();
+					list_items = str.content.split(";");
+					var list = "<ul class='list-group' style='margin: 0 30px;border: none;'>";
+					$.each(list_items,function(i,list_item){
+						list += "<li class='list-group-item'>"+list_item+"</li>"
+					});
+					list += "</ul>";
+					item += list;
+				}
+				if(str.type == "text"){
+					item += "<div class='panel-body'>&emsp;&emsp;"+str.content+"</div>"
+				}
+				if(str.type == "table"){
+					var table_items = new Array();
+					table_items = str.content.split(";");
+					var table_ = "<table class='table table-striped'><tr>";
+					$.each(table_items,function(i,cell){
+						table_ += "<td index='"+i+"'>"+cell+"</td>"
+					});
+					table_ += "</tr></table>";
+					item += table_;
+				}
+				item += "</div>";
+				//alert(item);
+				$(target).append(item);
+			});
+			
+		}
+	</script>
+</body>
+</html>
