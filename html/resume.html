@@ -12,12 +12,13 @@
 			font-size: 18px;
 			background-color: white;
 			background-image: none;
-			padding: 2px 10px;
+			padding: 2px 5px;
 		}
 		
 		h1.name{
 			color: #3071a9;
 			font-size: 48px;
+			background-color: white;
 		}
 		.panel-body{
 			padding: 5px;
@@ -32,9 +33,10 @@
 			vertical-align: middle;
 		}
 		h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
-			margin-top: 0px;
+			margin-top: 10px;
 			margin-bottom: 10px;
 			font-weight: bold;
+			background-color: lightblue;
 		}
 		td{
 			vertical-align: middle;
@@ -42,8 +44,11 @@
 		.panel-body{
 			line-height: 36px;
 		}
-		table{
-
+		.table{
+			margin: 10px 0px;
+		}
+		.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
+			border-top:none;
 		}
 	</style>
 </head>
@@ -79,12 +84,13 @@
 				if(msg.field == "name"){
 					$("h1.name").text(msg.message);
 					$("#photo").prop("src","../images/icons/"+msg.message+".jpg");
+					return true;
 				}
 
 				var str = "<li class='list-group-item'>";
-				if(msg.field != "" && msg.field != "name"){
+				if(msg.field != ""){
 					if(msg.icon != ""){
-						str += "<img src='../images/icons/"+msg.icon+".png' width='34px'>&emsp;";
+						str += "<img src='../images/icons/"+msg.icon+".png' class ='img-circle' width='34px'>&emsp;";
 					}
 					str += msg.message;
 				}
@@ -109,9 +115,9 @@
 					//分割字符串为数组
 					var list_items = new Array();
 					list_items = str.content.split(";");
-					var list = "<ul class='list-group' style='margin: 0 30px;border: none;'>";
+					var list = "<ul class='list-group' style='margin:0px;border: none;'>";
 					$.each(list_items,function(i,list_item){
-						list += "<li class='list-group-item'>"+list_item+"</li>"
+						list += "<li class='list-group-item'> <img src='../images/icons/right.jpg' class ='img-circle' width='29px'>"+list_item+"</li>";
 					});
 					list += "</ul>";
 					item += list;
