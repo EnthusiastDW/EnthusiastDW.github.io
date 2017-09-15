@@ -3,6 +3,8 @@
 <head>
 	<title>EnthusiastDW's HomePage</title>
 	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="js-css\bootstrap\css\bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="js-css\bootstrap\css\bootstrap-theme.min.css">
 	<style type="text/css">
 		#body{
 			background-color: lightblue;
@@ -12,10 +14,21 @@
 			text-align: center;
 			margin: 20px 0 20px;
 		}
+		.list-group-item{
+			padding: 5px 5px;
+		}
 	</style>
 </head>
 <body id="body">
+	<div>
+		<span>IP:&ensp;</span><span id="ip"></span>&emsp;
+		<span>城市:&ensp;</span><span id="city"></span>&emsp;
+		<span>日期:&ensp;</span><span id="time"></span>&ensp;<span id="week"></span>&emsp;
+		<span>天气:&ensp;</span><span id="TQ"></span><img src="#" id="TQ_img"/>&emsp;
+		<span>温度:&ensp;</span><span id="temp"></span>
+	</div>
 	<div class="page-header">
+ 	 	
  	 	<h1>Welcome to my zone!</h1>
  	 	<p class="text-right" style="font: 12px '微软雅黑';margin-right: 10px;">EnthusiastDW's personal web
  	 		<br>
@@ -23,47 +36,65 @@
  	 	</p>
 	</div>
 
-	<div class="row">
+	<div class="row" style="margin: 0px 10px;">
   		<div class="col-md-2">
-  			<div class="list-group" id="doc_lists">
+  			<div class="list-group" style="text-align: center;">
 			 	<a href="#" class="list-group-item active">文章列表</a>
+			 	<div id="doc_lists" style="text-align:left; font-size: 12px;"></div>
 			</div>
+			
   		</div>
   		<div class="col-md-10">
   			<iframe src="html/welcome.html" name="contents" frameborder="0px" width="100%" height="1000px"></iframe>
   		</div>
 	</div>
 
-
-
-
-
-
-	<link rel="stylesheet" type="text/css" href="js-css\bootstrap\css\bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="js-css\bootstrap\css\bootstrap-theme.min.css">
 	<script src="js-css\jquery\1.11.1\jquery.min.js"></script>
 	<script src="js-css\bootstrap\js\bootstrap.min.js"></script>
 	<script src="document/lists.js"></script>
+	<script src="http://pv.sohu.com/cityjson"></script>
 	<script type="text/javascript">
 		$(function(){
 			$.each(lists,function(index,item){
-				var str = "<a href='document/"+item.url+"' class='list-group-item active' target='contents''>"+item.title+"</a>";
-				$("#doc_lists").append(str);
+				var str = "<a href='document/"+item.url+"' class='list-group-item' target='contents''>"+(index+1) + "." + item.title+"</a>";
+				if( !$.contains(document.body,$("#" + item.cate)[0])){
+					$("#doc_lists").append("<div class='list-group active' id='"+item.cate+"'><span class='list-group-item disabled' style='text-align: center;' >"+item.cate+"</span></div>");
+				}
+				$("#"  + item.cate).append(str);
+				//$("#doc_lists").append(str);
 			})
+			
+			$.ajaxSetup({
+				crossDomain:true,
+				isLocal:true
+			});
 
-			//jsonp 的使用方法
-			/*
+			var ip = returnCitySN.cip;
+			$("#ip").text(ip);
+			var cityID = "101020100";
+			///*
 			$.ajax({
-				type:'get',
-				url:'document/lists.js',
-				dataType:'jsonp',
-				//jsonp:'',
-				jsonpCallback:"flightHandler",
+				type:"get",
+				//url:"http://www.weather.com.cn/data/cityinfo/" + cityID + ".html",
+				url:"http://localhost:8080/weatherinfo",
+				data:"cityID="+cityID,
+				dataType:"jsonp",
+				jsonp:"callback",
 				success:function(data){
-					alert(data.lists);
+					console.log(data);
+					$("#city").text(data.weatherinfo.city);
+					$("#TQ").text(data.weatherinfo.weather);
+					$("#temp").text(data.weatherinfo.temp1+"~"+data.weatherinfo.temp2);
+					//$("#TQ_img").prop("src","http://www.weather.com.cn/m/i/weatherpic/29x20/"+data.weatherinfo.img2);
 				}
 			});
-			*/
+			//*/
+			var today = new Date();
+			var dateStr = "日一二三四五六";
+			//alert(dateStr.charAt(1));
+			$("#week").text("星期"+(dateStr.charAt(today.getDay())));
+			//var dateStr2 = dateFormat(today);
+			$("#time").text(today.getFullYear() + "年" + (today.getMonth()+1) + "月" + today.getDate() +"日");
 		});
 	</script>
 </body>
